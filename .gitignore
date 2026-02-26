@@ -1,0 +1,5 @@
+.vs/
+.rasa/
+models/
+rag_store/
+*.faiss
