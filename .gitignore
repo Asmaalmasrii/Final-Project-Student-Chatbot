@@ -1,5 +1,21 @@
-.vs/
+# Rasa generated
 .rasa/
 models/
+
+# FAISS / vector store (too large for GitHub)
 rag_store/
 *.faiss
+*.pkl
+rag_store - 副本/
+*.faiss
+*.pkl
+# IDE
+.vs/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Env
+.env
