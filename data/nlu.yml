@@ -16,6 +16,13 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
+- intent: ask_kpu
+  examples: |
+    - What programs does KPU offer?
+    - How do I apply to KPU?
+    - Where is the Surrey campus?
+    - What is tuition for international students?
+    - When is the application deadline?
 
 - intent: goodbye
   examples: |

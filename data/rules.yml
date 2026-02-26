@@ -1,6 +1,10 @@
 version: "3.1"
 
 rules:
+- rule: Answer KPU questions using RAG
+  steps:
+  - intent: ask_kpu
+  - action: action_kpu_rag
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
