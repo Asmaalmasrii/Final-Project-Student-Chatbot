@@ -13,490 +13,89 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-  <!-- <style>
-    :root {
-      --bg: #fff;
-      --card: #ffffff;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --shadow: 0 10px 30px rgba(0, 0, 0, .08);
-      --primary: #800022;
-      --primaryHover: #5a0018;
-      --danger: #ef4444;
-      --dangerHover: #dc2626;
-      --good: #16a34a;
-      --chip: #f3f4f6;
-      --user: #f8e5e9;
-      --bot: #800022;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Montserrat", sans-serif;
-      margin: 0;
-      background: var(--bg);
-      color: #111827;
-    }
-
-    .shell {
-      /* max-width: 1400px; */
-      margin: 0 auto;
-      padding: 0 14px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .title h1 {
-      margin: 0;
-      font-size: 48px;
-      font-family: 'Playfair Display', serif;
-      font-weight: 500;
-      color: var(--primary);
-    }
-
-    .title p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      background: var(--chip);
-      border-radius: 999px;
-      font-size: 12px;
-      color: #111827;
-    }
-
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #9ca3af;
-    }
-
-    .dot.good {
-      background: var(--good);
-    }
-
-    .dot.bad {
-      background: var(--danger);
-    }
-
-    .btn {
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .btn:hover {
-      filter: brightness(0.98);
-    }
-
-    .btn-primary {
-      border: none;
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--primaryHover);
-    }
-
-    .btn-danger {
-      border: none;
-      background: var(--danger);
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background: var(--dangerHover);
-    }
-
-    #newChatBtn {
-      width: max-content;
-      font-size: 14px;
-      padding: 8px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 1000px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    #historyPane {
-      height: 524px;
-      overflow-y: auto;
-      padding: 14px;
-      background: #fafafa;
-    }
-
-    .history-item {
-      padding: 10px;
-      border-radius: 8px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      font-size: 13px;
-      transition: all 0.2s;
-    }
-
-    .history-item:hover {
-      border-color: #d49da9;
-      background: #fcf2f4;
-    }
-
-    .history-item .date {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .btn-new-chat {
-      background: linear-gradient(135deg, #800022 0%, #a61b40 100%);
-      color: white;
-      border: none;
-      border-radius: 15px;
-      padding: 10px 0;
-      font-weight: 300;
-      font-size: 20px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 4px 6px rgba(128, 0, 34, 0.2);
-    }
-
-    .btn-new-chat:hover {
-      background: linear-gradient(135deg, #a61b40 0%, #c42953 100%);
-      transform: translateY(-1px);
-      /* Slight lift effect */
-      box-shadow: 0 6px 12px rgba(128, 0, 34, 0.3);
-    }
-
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .card-head strong {
-      font-size: 14px;
-    }
-
-    .card-body {
-      padding: 14px;
-      padding-top: 3px;
-    }
-
-    #accountMenu {
-      align-items: center;
-    }
-
-    #accountMenu strong {
-      flex: 1;
-    }
-
-    #accountMenu .tabs {
-      flex: 2;
-      margin: 0;
-    }
-
-    #chat {
-      height: 750px;
-      overflow-y: auto;
-      padding: 14px;
-      background: #fafafa;
-    }
-
-    .msg {
-      margin: 10px 0;
-      padding: 10px 12px;
-      border-radius: 12px;
-      max-width: max-content;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      border: 1px solid rgba(0, 0, 0, .04);
-    }
-
-    .msg.user {
-      background: var(--user);
-      margin-left: auto;
-      text-align: right;
-    }
-
-    .msg.bot {
-      background: var(--bot);
-      color: white;
-      margin-right: auto;
-    }
-
-    .composer {
-      display: flex;
-      gap: 10px;
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
-      background: var(--card);
-    }
-
-    .composer input {
-      flex: 1;
-      padding: 11px 12px;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      outline: none;
-    }
-
-    .composer input:focus {
-      border-color: #d49da9;
-      box-shadow: 0 0 0 3px rgba(128, 0, 34, .15);
-    }
-
-    .small {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: #f9fafb;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .tab.active {
-      background: white;
-      border-color: #e5b8c2;
-      box-shadow: 0 6px 14px rgba(128, 0, 34, .10);
-    }
-
-    .field {
-      margin: 10px 0;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 10px 11px;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      outline: none;
-    }
-
-    .field input:focus {
-      border-color: #d49da9;
-      box-shadow: 0 0 0 3px rgba(128, 0, 34, .15);
-    }
-
-    .note {
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
-    .error {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(239, 68, 68, .3);
-      background: rgba(239, 68, 68, .08);
-      color: #991b1b;
-      font-size: 12px;
-      display: none;
-    }
-
-    .ok {
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(22, 163, 74, .25);
-      background: rgba(22, 163, 74, .08);
-      color: #14532d;
-      font-size: 12px;
-      display: none;
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 12px 0;
-    }
-  </style> -->
 </head>
 
 <body>
   <div class="shell">
-    <div class="topbar">
-      <div class="title">
-        <h1>KPU CHAT</h1>
-        <!-- <p class="small">Login (student/admin), then chat — your messages will be stored in MySQL.</p> -->
-      </div>
-
-      <div class="status" style="position: relative;">
-        <!-- <span class="chip" title="Backend status">
-          <span id="apiDot" class="dot"></span>
-          <span id="apiText">Checking backend…</span>
-        </span> -->
-
-        <span class="chip" title="Current user">
-          <span id="userText">Not logged in</span>
-        </span>
-
-        <button id="logoutBtn" class="btn btn-danger" style="display:none;">Logout</button>
-
-        <button id="accountToggleBtn" class="btn"
-          style="padding: 6px 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
-          title="Account Menu">
-          <svg style="width:20px; height:20px; display:block;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
-        </button>
-
-        <!-- Account Dropdown Container -->
-        <div id="accountDropdownContainer" class="card account-dropdown"
-          style="position: absolute; right: 0; top: calc(100% + 10px); display: none; z-index: 100; width: 320px; text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
-          <div class="card-head" id="accountMenu">
-            <strong>Account</strong>
-            <div class="tabs">
-              <button id="tabLogin" class="tab active" type="button">Login</button>
-              <button id="tabSignup" class="tab" type="button">Sign up</button>
-            </div>
-            <!-- <span class="chip">Auth</span> -->
-          </div>
-
-          <div class="card-body">
-            <!-- Login Form -->
-            <div id="loginPane">
-              <div class="field">
-                <label for="loginEmail">Email</label>
-                <input id="loginEmail" type="email" placeholder="you@kpu.ca" />
-              </div>
-
-              <div class="field">
-                <label for="loginPassword">Password</label>
-                <input id="loginPassword" type="password" placeholder="••••••••" />
-              </div>
-
-              <button id="loginBtn" class="btn btn-primary" style="width:100%;">Login</button>
-
-              <!-- <div class="note">
-                If you’re testing locally, create an account first using “Sign up”.
-              </div> -->
-            </div>
-
-            <!-- Signup Form -->
-            <div id="signupPane" style="display:none;">
-              <div class="field">
-                <label for="signupName">Full name (optional)</label>
-                <input id="signupName" type="text" placeholder="Asmaa Almasri" />
-              </div>
-
-              <div class="field">
-                <label for="signupEmail">Email</label>
-                <input id="signupEmail" type="email" placeholder="you@kpu.ca" />
-              </div>
-
-              <div class="field">
-                <label for="signupPassword">Password</label>
-                <input id="signupPassword" type="password" placeholder="Choose a strong password" />
-              </div>
-
-              <button id="signupBtn" class="btn btn-primary" style="width:100%;">Create account</button>
-
-              <div class="note">
-                Passwords are hashed on the server (bcrypt). No plaintext passwords are stored.
-              </div>
-            </div>
-
-            <div id="okBox" class="ok"></div>
-            <div id="errBox" class="error"></div>
-
-            <!-- <div class="divider"></div> -->
-
-            <!-- <p class="small">
-              Tips:
-              <br>• Make sure Flask runs on <b>127.0.0.1:8000</b>
-              <br>• Make sure Rasa runs on <b>127.0.0.1:5005</b>
-              <br>• Import the SQL schema into MySQL first
-            </p> -->
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="layout">
-      <!-- History -->
-      <div class="card">
-        <div class="card-head">
-          <strong>Conversations</strong>
-          <button id="newChatBtn" class="btn btn-new-chat">+ New Chat</button>
-          <!-- <span class="chip">History</span> -->
+      <!-- Left Panel -->
+      <div class="left-panel card"
+        style="display: flex; flex-direction: column; height: calc(100% - 14px); margin-top: 14px;">
+        <!-- Title Header -->
+        <div class="topbar" style="justify-content: center; gap: 10px; padding: 10px 14px 0 14px; border-bottom: none;">
+          <img src="kcLogo.png" alt="logo" />
+          <div class="title">
+            <h1>KPU CHAT</h1>
+          </div>
         </div>
-        <div id="historyPane">
+
+        <!-- History/Account Header -->
+        <div class="card-head" id="midHeader"
+          style="position: relative; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border);">
+          <div class="status" style="position: static; margin: 0; display: flex; align-items: center; gap: 10px;">
+            <button id="accountToggleBtn" class="btn"
+              style="padding: 6px 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+              title="Account Menu">
+              <svg style="width:20px; height:20px; display:block;" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </button>
+            <button id="logoutBtn" class="btn btn-danger" style="display:none;">Logout</button>
+          </div>
+
+          <button id="newChatBtn" class="btn btn-new-chat">+ New Chat</button>
+
+          <!-- Account Dropdown Container -->
+          <div id="accountDropdownContainer" class="card account-dropdown"
+            style="position: absolute; left: 14px; top: calc(100% + 14px); display: none; z-index: 100; width: 320px; text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+            <div class="card-head" id="accountMenu">
+              <strong>Account</strong>
+              <div class="tabs">
+                <button id="tabLogin" class="tab active" type="button">Login</button>
+                <button id="tabSignup" class="tab" type="button">Sign up</button>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <!-- Login Form -->
+              <div id="loginPane">
+                <div class="field">
+                  <label for="loginEmail">Email</label>
+                  <input id="loginEmail" type="email" placeholder="you@kpu.ca" />
+                </div>
+                <div class="field">
+                  <label for="loginPassword">Password</label>
+                  <input id="loginPassword" type="password" placeholder="••••••••" />
+                </div>
+                <button id="loginBtn" class="btn btn-primary" style="width:100%;">Login</button>
+              </div>
+
+              <!-- Signup Form -->
+              <div id="signupPane" style="display:none;">
+                <div class="field">
+                  <label for="signupName">Full name (optional)</label>
+                  <input id="signupName" type="text" placeholder="Asmaa Almasri" />
+                </div>
+                <div class="field">
+                  <label for="signupEmail">Email</label>
+                  <input id="signupEmail" type="email" placeholder="you@kpu.ca" />
+                </div>
+                <div class="field">
+                  <label for="signupPassword">Password</label>
+                  <input id="signupPassword" type="password" placeholder="Choose a strong password" />
+                </div>
+                <button id="signupBtn" class="btn btn-primary" style="width:100%;">Create account</button>
+              </div>
+
+              <div id="okBox" class="ok"></div>
+              <div id="errBox" class="error"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="historyPane" style="border-top: none;">
           <div id="historyList" style="display: flex; flex-direction: column; gap: 8px;">
             <div class="note">Login to see past conversations.</div>
           </div>
@@ -504,14 +103,9 @@
       </div>
 
       <!-- Chat -->
-      <div class="card">
-        <div class="card-head">
-          <strong>Chat</strong>
-          <span class="chip" title="Your browser sender id (for conversation session)" style="display: none;">
-            Sender: <span id="senderView" style="font-weight:700;"></span>
-          </span>
-          <button id="deleteChatBtn" class="btn btn-new-chat">Delete Chat</button>
-        </div>
+      <div class="window-chat"
+        style="display: flex; flex-direction: column; flex: 1; height: 100%; min-height: 0; position: relative; width: 100%;">
+        <span id="senderView" style="display: none;"></span>
 
         <div id="chat"></div>
 
@@ -527,296 +121,6 @@
   </div>
 
   <script src="script.js"></script>
-  <!-- <script>
-    // ---- API endpoints (served from Flask, same origin) ----
-    const API = {
-      me: "/me",
-      login: "/login",
-      signup: "/signup",
-      logout: "/logout",
-      chat: "/chat",
-      history: "/history"
-    };
-
-    // ---- Sender ID per browser (stored) ----
-    function uuidv4() {
-      // Simple UUID generator for browser usage
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-    }
-
-    const senderKeyStorage = "kpu_sender_id";
-    let SENDER_ID = localStorage.getItem(senderKeyStorage);
-    if (!SENDER_ID) {
-      SENDER_ID = uuidv4();
-      localStorage.setItem(senderKeyStorage, SENDER_ID);
-    }
-    document.getElementById("senderView").textContent = SENDER_ID;
-
-    // ---- UI elements ----
-    const chat = document.getElementById("chat");
-    const input = document.getElementById("message");
-    const sendBtn = document.getElementById("send");
-    const historyList = document.getElementById("historyList");
-    const newChatBtn = document.getElementById("newChatBtn");
-
-    const tabLogin = document.getElementById("tabLogin");
-    const tabSignup = document.getElementById("tabSignup");
-    const loginPane = document.getElementById("loginPane");
-    const signupPane = document.getElementById("signupPane");
-
-    const okBox = document.getElementById("okBox");
-    const errBox = document.getElementById("errBox");
-
-    const apiDot = document.getElementById("apiDot");
-    const apiText = document.getElementById("apiText");
-    const userText = document.getElementById("userText");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    function showOk(msg) {
-      okBox.textContent = msg;
-      okBox.style.display = "block";
-      errBox.style.display = "none";
-    }
-
-    function showErr(msg) {
-      errBox.textContent = msg;
-      errBox.style.display = "block";
-      okBox.style.display = "none";
-    }
-
-    function clearAlerts() {
-      okBox.style.display = "none";
-      errBox.style.display = "none";
-      okBox.textContent = "";
-      errBox.textContent = "";
-    }
-
-    function addMessage(text, who) {
-      const div = document.createElement("div");
-      div.className = `msg ${who}`;
-      div.textContent = text;
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function setAuthUI(isLoggedIn, role, userId) {
-      if (isLoggedIn) {
-        userText.textContent = `Logged in • ${role} • id ${userId}`;
-        logoutBtn.style.display = "inline-block";
-      } else {
-        userText.textContent = "Not logged in";
-        logoutBtn.style.display = "none";
-      }
-    }
-
-    // ---- Tabs ----
-    tabLogin.addEventListener("click", () => {
-      tabLogin.classList.add("active");
-      tabSignup.classList.remove("active");
-      loginPane.style.display = "block";
-      signupPane.style.display = "none";
-      clearAlerts();
-    });
-
-    tabSignup.addEventListener("click", () => {
-      tabSignup.classList.add("active");
-      tabLogin.classList.remove("active");
-      signupPane.style.display = "block";
-      loginPane.style.display = "none";
-      clearAlerts();
-    });
-
-    // ---- Auth calls ----
-    async function apiGet(url) {
-      const res = await fetch(url, { method: "GET", credentials: "include" });
-      return res.json();
-    }
-
-    async function apiPost(url, body) {
-      const res = await fetch(url, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body || {})
-      });
-      const data = await res.json().catch(() => ({}));
-      return { ok: res.ok, status: res.status, data };
-    }
-
-    async function refreshMe() {
-      try {
-        const me = await apiGet(API.me);
-        setAuthUI(!!me.logged_in, me.role, me.user_id);
-        apiDot.className = "dot good";
-        apiText.textContent = "Backend online";
-      } catch (e) {
-        apiDot.className = "dot bad";
-        apiText.textContent = "Backend offline";
-        setAuthUI(false);
-      }
-      loadHistory();
-    }
-
-    async function loadHistory() {
-      if (userText.textContent === "Not logged in") {
-        historyList.innerHTML = `<div class="note">Login to see past conversations.</div>`;
-        return;
-      }
-      historyList.innerHTML = `<div class="note">Loading history...</div>`;
-      try {
-        const res = await fetch(API.history, { credentials: "include" });
-        if (!res.ok) {
-          historyList.innerHTML = `<div class="note">Endpoint /history not yet implemented in app.py.</div>`;
-          return;
-        }
-        const sessions = await res.json();
-        if (!Array.isArray(sessions) || sessions.length === 0) {
-          historyList.innerHTML = `<div class="note">No past conversations.</div>`;
-          return;
-        }
-        historyList.innerHTML = "";
-        sessions.forEach(s => {
-          const div = document.createElement("div");
-          div.className = "history-item";
-          div.innerHTML = `<div>Chat #${s.id}</div><div class="date">${new Date(s.started_at).toLocaleString()}</div>`;
-          div.onclick = () => alert("Loading past chats requires a backend update.");
-          historyList.appendChild(div);
-        });
-      } catch (e) {
-        historyList.innerHTML = `<div class="note">Failed to load history.</div>`;
-      }
-    }
-
-    newChatBtn.addEventListener("click", () => {
-      SENDER_ID = uuidv4();
-      localStorage.setItem(senderKeyStorage, SENDER_ID);
-      document.getElementById("senderView").textContent = SENDER_ID;
-      chat.innerHTML = "";
-      addMessage("Started a new conversation! How can I help?", "bot");
-    });
-
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      clearAlerts();
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value;
-
-      if (!email || !password) {
-        showErr("Please enter email and password.");
-        return;
-      }
-
-      const { ok, data } = await apiPost(API.login, { email, password });
-      if (!ok) {
-        showErr(data.error || "Login failed.");
-        return;
-      }
-
-      showOk("Login successful.");
-      await refreshMe();
-    });
-
-    document.getElementById("signupBtn").addEventListener("click", async () => {
-      clearAlerts();
-      const full_name = document.getElementById("signupName").value.trim();
-      const email = document.getElementById("signupEmail").value.trim();
-      const password = document.getElementById("signupPassword").value;
-
-      if (!email || !password) {
-        showErr("Please enter email and password.");
-        return;
-      }
-
-      const { ok, status, data } = await apiPost(API.signup, { email, password, full_name });
-      if (!ok) {
-        if (status === 409) showErr("Email already exists. Try logging in instead.");
-        else showErr(data.error || "Signup failed.");
-        return;
-      }
-
-      showOk("Account created. You can login now.");
-      tabLogin.click();
-      document.getElementById("loginEmail").value = email;
-      document.getElementById("loginPassword").value = "";
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      clearAlerts();
-      const { ok, data } = await apiPost(API.logout, {});
-      if (!ok) {
-        showErr(data.error || "Logout failed.");
-        return;
-      }
-      showOk("Logged out.");
-      await refreshMe();
-    });
-
-    // ---- Chat ----
-    async function sendMessage() {
-      const text = input.value.trim();
-      if (!text) return;
-
-      addMessage(text, "user");
-      input.value = "";
-
-      try {
-        const res = await fetch(API.chat, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sender: SENDER_ID, message: text })
-        });
-
-        const data = await res.json().catch(() => null);
-
-        if (!res.ok) {
-          const msg = (data && (data.error || data.details)) ? (data.error + (data.details ? (": " + data.details) : "")) : "Chat request failed.";
-          addMessage(msg, "bot");
-          return;
-        }
-
-        if (Array.isArray(data) && data.length > 0) {
-          data.forEach(m => {
-            if (m && m.text) addMessage(m.text, "bot");
-          });
-        } else {
-          addMessage("No response from bot.", "bot");
-        }
-      } catch (err) {
-        addMessage("Error connecting to backend (is Flask running on port 8000?)", "bot");
-        console.error(err);
-      }
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
-
-    const accountToggleBtn = document.getElementById("accountToggleBtn");
-    const accountDropdownContainer = document.getElementById("accountDropdownContainer");
-
-    accountToggleBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (accountDropdownContainer.style.display === "none") {
-        accountDropdownContainer.style.display = "block";
-      } else {
-        accountDropdownContainer.style.display = "none";
-      }
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!accountDropdownContainer.contains(e.target)) {
-        accountDropdownContainer.style.display = "none";
-      }
-    });
-
-    // Initial
-    addMessage("Hi! You can sign up/login on the top right, then ask me questions.", "bot");
-    refreshMe();
-  </script> -->
 </body>
 
 </html>
