@@ -13,8 +13,8 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET", "change-this-to-a-random-secret")
 
-# If your frontend is in a different origin later, you may need supports_credentials=True.
-CORS(app)
+# Allow cross-origin requests flexibly
+CORS(app, supports_credentials=True)
 
 RASA_URL = "http://127.0.0.1:5005/webhooks/rest/webhook"
 
@@ -182,6 +182,13 @@ def logout():
     return jsonify({"message": "Logged out"})
 
 
+@app.route("/guest", methods=["POST"])
+def guest():
+    session["user_id"] = "guest"
+    session["role"] = "guest"
+    return jsonify({"message": "Guest login successful", "user_id": "guest", "role": "guest"})
+
+
 @app.route("/me", methods=["GET"])
 def me():
     if not session.get("user_id"):
@@ -204,6 +211,8 @@ def chat():
         return jsonify({"error": "message is required"}), 400
 
     user_id = get_logged_in_user_id()
+    if user_id == "guest":
+        user_id = None
 
     db_conn = None
     try:

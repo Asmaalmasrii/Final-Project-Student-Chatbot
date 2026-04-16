@@ -52,33 +52,88 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="container py-5" style={{ maxWidth: 520 }}>
-      <div className="card shadow-sm">
-        <div className="card-body p-4">
-          <h3 className="mb-3 text-center">Administrative Login</h3>
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-6 col-lg-5">
+          <div className="p-4">
+            <h2 className="mb-4 text-center fw-bold" style={{ color: "#800022", fontSize: "2.5rem" }}>
+              Administrative Login
+            </h2>
 
-          {err && <div className="alert alert-danger">{err}</div>}
+            {err && <div className="alert alert-danger">{err}</div>}
 
-          <form onSubmit={onSubmit} className="d-flex flex-column gap-3">
-            <div>
-              <label className="form-label">Admin Email</label>
-              <input className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <form onSubmit={onSubmit} className="d-flex flex-column gap-3">
+              <div>
+                <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                  Admin Email:
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#371C23",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    height: "45px",
+                    padding: "0 15px",
+                    fontSize: "1rem"
+                  }}
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                  Password:
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#371C23",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    height: "45px",
+                    padding: "0 15px",
+                    fontSize: "1rem"
+                  }}
+                  required
+                />
+              </div>
+
+              <div className="text-center mt-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{
+                    backgroundColor: "#800022",
+                    color: "white",
+                    borderRadius: "30px",
+                    border: "none",
+                    padding: "10px 40px",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    width: "250px",
+                    cursor: "pointer"
+                  }}
+                >
+                  {loading ? "Signing in..." : "Login as Admin"}
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-4 text-center fw-bold" style={{ color: "#371C23", fontSize: "1.1rem" }}>
+              <Link to="/login" style={{ color: "#371C23", textDecoration: "underline" }}>
+                Back to student login
+              </Link>
             </div>
 
-            <div>
-              <label className="form-label">Password</label>
-              <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-
-            <div className="text-center">
-              <button className="kpu-btn" type="submit" disabled={loading}>
-                {loading ? "Signing in..." : "Login as Admin"}
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-3 text-center">
-            <Link to="/login" className="kpu-link">Back to student login</Link>
           </div>
         </div>
       </div>

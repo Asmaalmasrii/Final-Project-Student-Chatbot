@@ -20,34 +20,36 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg shadow-sm" style={{ backgroundColor: "#960018" }}>
-        <div className="container d-flex align-items-center justify-content-between">
+      <nav className="navbar navbar-expand-lg border-0 p-0" style={{ backgroundColor: "transparent" }}>
+        <div className="container-fluid px-4 d-flex align-items-center justify-content-between">
 
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-3">
             <button
-              className="kpu-ghost"
+              className="btn d-flex align-items-center justify-content-center"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
-              style={{ borderColor: "rgba(255,255,255,0.5)", color: "#111827" }}
+              style={{ backgroundColor: "#800022", color: "white", border: "none", borderRadius: "8px", width: "70px", height: "36px", fontSize: "20px", padding: 0, fontWeight: "600" }}
             >
-              ☰
+              MENU
             </button>
 
-            <Link className="navbar-brand text-white fw-bold mb-0" to="/chat">
-              KPU Student Assistant
+            <Link className="navbar-brand fw-bold mb-0" to="/chat" style={{ color: "#800022", fontSize: "28px", fontFamily: "'Playfair Display', serif" }}>
+              KPU CHAT
             </Link>
           </div>
 
           <div className="d-flex align-items-center gap-3">
             {session ? (
               <>
-                <span className="text-white small">{displayName}</span>
-                <button className="kpu-ghost" onClick={handleLogout}>Logout</button>
+                <span style={{ color: "#800022", fontWeight: "bold", fontSize: "18px" }}>{displayName}</span>
+                <button onClick={handleLogout} style={{ backgroundColor: "#800022", color: "white", border: "none", borderRadius: "8px", padding: "6px 16px", fontWeight: "bold", letterSpacing: "1px" }}>
+                  LOGOUT
+                </button>
               </>
             ) : (
               <>
-                <Link className="kpu-link text-white" to="/login">Login</Link>
-                <Link className="kpu-link text-white" to="/signup">Sign Up</Link>
+                <Link className="kpu-link" style={{ color: "#800022", fontWeight: "bold" }} to="/login">LOGIN</Link>
+                <Link className="kpu-link" style={{ color: "#800022", fontWeight: "bold" }} to="/signup">SIGN UP</Link>
               </>
             )}
           </div>

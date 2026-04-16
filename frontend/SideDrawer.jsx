@@ -28,7 +28,7 @@ export default function SideDrawer({ open, onClose, session }) {
           left: 0,
           height: "100vh",
           width: 280,
-          background: "#fff",
+          background: "#371C23",
           zIndex: 1000,
           transform: open ? "translateX(0)" : "translateX(-100%)",
           transition: "transform 180ms ease",
@@ -37,24 +37,41 @@ export default function SideDrawer({ open, onClose, session }) {
           display: "flex",
           flexDirection: "column",
           gap: 12,
+          color: "white"
         }}
       >
         <div className="d-flex align-items-center justify-content-between">
-          <div style={{ fontWeight: 800 }}>Menu</div>
-          <button className="kpu-ghost" onClick={onClose}>Close</button>
+          <div style={{ fontWeight: 800, fontSize: "1.2rem" }}>Menu</div>
+          <button 
+            className="btn" 
+            style={{ color: "white", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "30px", padding: "4px 12px" }} 
+            onClick={onClose}
+          >
+            Close
+          </button>
         </div>
 
-        <div className="small text-muted">
+        <div className="small" style={{ color: "rgba(255,255,255,0.7)" }}>
           {session ? `Signed in as: ${displayName}` : "Not signed in"}
         </div>
 
-        <hr className="my-2" />
+        <hr className="my-2" style={{ borderColor: "rgba(255,255,255,0.2)" }} />
 
-        <Link className="kpu-link" to="/chat" onClick={onClose}>Chat</Link>
+        <Link 
+          to="/chat" 
+          onClick={onClose}
+          style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+        >
+          Chat
+        </Link>
 
         {/* If NOT logged in show Admin Login */}
         {!session && (
-          <Link className="kpu-link" to="/admin-login" onClick={onClose}>
+          <Link 
+            to="/admin-login" 
+            onClick={onClose}
+            style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+          >
             Administrative Login
           </Link>
         )}
@@ -62,16 +79,24 @@ export default function SideDrawer({ open, onClose, session }) {
         {/* If logged in show Settings + History */}
         {session && (
           <>
-            <Link className="kpu-link" to="/settings" onClick={onClose}>
+            <Link 
+              to="/settings" 
+              onClick={onClose}
+              style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+            >
               Settings
             </Link>
-            <Link className="kpu-link" to="/history" onClick={onClose}>
+            <Link 
+              to="/history" 
+              onClick={onClose}
+              style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+            >
               Previous Messages
             </Link>
           </>
         )}
 
-        <div style={{ marginTop: "auto" }} className="small text-muted">
+        <div style={{ marginTop: "auto", color: "rgba(255,255,255,0.5)" }} className="small">
           KPU Student Assistant
         </div>
       </div>

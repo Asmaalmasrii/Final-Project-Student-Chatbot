@@ -94,23 +94,18 @@ export default function Chat() {
   }
 
   return (
-    <div className="min-vh-200" style={{ background: "#F4F7FB" }}>
-      <div className="container py-4" style={{ maxWidth: 1000 }}>
-        <div
-          className="card shadow-sm border-0"
-          style={{ borderRadius: 16, position: "relative" }}
-        >
+    <div style={{ background: "#F0E7D8" }}>
+      <div className="container p-0" style={{ maxWidth: 1000 }}>
+        <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
+          
           {/* Scrollable Chat Body */}
           <div
             ref={chatRef}
-            className="card-body"
             style={{
-              height: 520,
+              height: 775,
               overflowY: "auto",
-              background: "white",
-              borderTopLeftRadius: 16,
-              border: "1px solid #010712",
-              borderTopRightRadius: 16
+              background: "transparent",
+              marginBottom: "10px"
             }}
           >
             {messages.map((msg, i) => {
@@ -118,7 +113,7 @@ export default function Chat() {
               return (
                 <div
                   key={i}
-                  className={`d-flex mb-2 fade-in ${
+                  className={`d-flex mb-3 fade-in ${
                     isUser ? "justify-content-end" : "justify-content-start"
                   }`}
                 >
@@ -127,43 +122,38 @@ export default function Chat() {
                     style={{
                       maxWidth: "75%",
                       borderRadius: isUser
-                        ? "18px 18px 6px 18px"
-                        : "18px 18px 18px 6px",
-                      background: isUser ? "#2087e8" : "#F8FAFC",
-                      color: isUser ? "white" : "#111827",
-                      border: isUser ? "none" : "1px solid #E5E7EB",
-                      boxShadow: isUser ? "none" : "0 2px 6px rgba(0,0,0,0.06)",
+                        ? "16px 0 16px 16px"
+                        : "0 16px 16px 16px",
+                      background: isUser ? "#371C23" : "#800022",
+                      color: "white",
+                      border: "none",
+                      boxShadow: "none",
                       whiteSpace: "pre-wrap",
-                      lineHeight: 1.45
+                      lineHeight: 1.45,
+                      fontSize: 16
                     }}
                   >
-                    <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 2, fontWeight: "bold", }}>
-                      {isUser ? "You" : "KPU Bot"}
-                    </div>
-                    <div style={{ fontSize: 16 }}>{msg.text}</div>
+                    <div>{msg.text}</div>
                   </div>
                 </div>
               );
             })}
 
             {busy && (
-              <div className="d-flex justify-content-start mb-2 fade-in">
+              <div className="d-flex justify-content-start mb-3 fade-in">
                 <div
                   className="px-3 py-2"
                   style={{
                     maxWidth: "75%",
-                    borderRadius: "18px 18px 18px 6px",
-                    background: "#F8FAFC",
-                    border: "1px solid #E5E7EB",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.06)"
+                    borderRadius: "0 16px 16px 16px",
+                    background: "#800022",
+                    color: "white",
+                    border: "none",
+                    boxShadow: "none",
+                    fontSize: 15
                   }}
                 >
-                  <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 2 }}>
-                    KPU Bot
-                  </div>
-                  <div style={{ fontSize: 15 }}>
-                    <TypingDots />
-                  </div>
+                  <TypingDots />
                 </div>
               </div>
             )}
@@ -176,7 +166,6 @@ export default function Chat() {
           {showTopBtn && (
             <button
               onClick={scrollToTop}
-              className="kpu-btn"
               style={{
                 position: "absolute",
                 right: 18,
@@ -190,7 +179,10 @@ export default function Chat() {
                 marginBottom: 22,
                 fontSize: 12,
                 boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
-                zIndex: 10
+                zIndex: 10,
+                background: "#F4EDE2",
+                border: "none",
+                color: "#800022"
               }}
               title="Back to top"
             >
@@ -202,7 +194,6 @@ export default function Chat() {
           {showBottomBtn && (
             <button
               onClick={scrollToBottom}
-              className="kpu-btn"
               style={{
                 position: "absolute",
                 right: 70,
@@ -216,7 +207,10 @@ export default function Chat() {
                 marginBottom: 22,
                 fontSize: 18,
                 boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
-                zIndex: 10
+                zIndex: 10,
+                background: "#F4EDE2",
+                border: "none",
+                color: "#800022"
               }}
               title="Jump to latest"
             >
@@ -226,45 +220,44 @@ export default function Chat() {
 
           {/* Input Area */}
           <div
-            className="p-2"
             style={{
-              background: "#FAFBFF",
-              borderTop: "1px solid #E5E7EB",
-              borderBottomLeftRadius: 16,
-              borderBottomRightRadius: 16
+              background: "#800022",
+              borderRadius: "30px",
+              display: "flex",
+              alignItems: "center",
+              padding: "10px 24px",
+              boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
             }}
           >
-            <div className="input-group">
-              <input
-                className="form-control"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && send()}
-                placeholder="Type your message…"
-                style={{
-                  borderRadius: 12,
-                  border: "1px solid #E5E7EB",
-                  padding: "12px 12px"
-                }}
-              />
-              <button
-                className="kpu-btn"
-                onClick={send}
-                disabled={busy}
-                style={{
-                  borderRadius: 12,
-                  padding: "0 18px",
-                  fontWeight: 600,
-                  marginLeft: 8
-                }}
-              >
-                Send
-              </button>
-            </div>
-
-            <div className="text-muted mt-2" style={{ fontSize: 12 }}>
-              Tip: Try “How do I contact IT support?” or “What are campus hours?”
-            </div>
+            <input
+              className="chat-input-custom"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && send()}
+              placeholder="Ask Anything"
+              style={{
+                flex: 1,
+                background: "transparent",
+                border: "none",
+                color: "white",
+                outline: "none",
+                fontSize: "16px"
+              }}
+            />
+            <button
+              onClick={send}
+              disabled={busy}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "16px",
+                marginLeft: "8px"
+              }}
+            >
+              SEND
+            </button>
           </div>
         </div>
       </div>

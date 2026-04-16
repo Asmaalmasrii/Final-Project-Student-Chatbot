@@ -43,69 +43,110 @@ export default function Login() {
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-12 col-md-6 col-lg-5">
-          <div className="card shadow-sm">
-            <div className="card-body p-4">
-              <h3 className="mb-3 text-center">Welcome </h3>
+          <div className="p-4">
+            <h2 className="mb-4 text-center fw-bold" style={{ color: "#800022", fontSize: "2.5rem" }}>
+              Welcome
+            </h2>
 
-              {err && <div className="alert alert-danger">{err}</div>}
+            {err && <div className="alert alert-danger">{err}</div>}
 
-              <form onSubmit={onSubmit} className="d-flex flex-column gap-3">
+            <form onSubmit={onSubmit} className="d-flex flex-column gap-3">
 
-                <div>
-                  <label className="form-label">Email</label>
-                  <input
-                    className="form-control"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@kpu.ca"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="form-label">Password</label>
-                  <input
-                    className="form-control"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-
-                {/* Centered KPU Buttons */}
-                <div className="text-center">
-                  <button
-                    className="kpu-btn"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    {loading ? "Signing in..." : "Login"}
-                  </button>
-                </div>
-
-                <div className="text-center">
-                  <button
-                    type="button"
-                    className="kpu-ghost"
-                    onClick={onGuest}
-                    disabled={loading}
-                  >
-                    Continue as Guest
-                  </button>
-                </div>
-
-              </form>
-
-              <div className="mt-4 text-center">
-                New here?{" "}
-                <Link to="/signup" className="kpu-link">
-                  Create an account
-                </Link>
+              <div>
+                <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                  Email:
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#371C23",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    height: "45px",
+                    padding: "0 15px",
+                    fontSize: "1rem"
+                  }}
+                />
               </div>
 
+              <div>
+                <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                  Password:
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#371C23",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    height: "45px",
+                    padding: "0 15px",
+                    fontSize: "1rem"
+                  }}
+                />
+              </div>
+
+              {/* Centered Buttons */}
+              <div className="text-center mt-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{
+                    backgroundColor: "#800022",
+                    color: "white",
+                    borderRadius: "30px",
+                    border: "none",
+                    padding: "10px 40px",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    width: "180px",
+                    cursor: "pointer"
+                  }}
+                >
+                  {loading ? "Signing in..." : "Login"}
+                </button>
+              </div>
+
+              <div className="text-center mt-2">
+                <button
+                  type="button"
+                  onClick={onGuest}
+                  disabled={loading}
+                  style={{
+                    backgroundColor: "#371C23",
+                    color: "white",
+                    borderRadius: "30px",
+                    border: "none",
+                    padding: "10px 40px",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    width: "250px",
+                    cursor: "pointer"
+                  }}
+                >
+                  Continue as Guest
+                </button>
+              </div>
+
+            </form>
+
+            <div className="mt-4 text-center fw-bold" style={{ color: "#371C23", fontSize: "1.1rem" }}>
+              New here?{" "}
+              <Link to="/signup" style={{ color: "#371C23", textDecoration: "underline" }}>
+                Create an account
+              </Link>
             </div>
+
           </div>
         </div>
       </div>

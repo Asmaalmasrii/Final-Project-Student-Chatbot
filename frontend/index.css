@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #d9dddc;
+  background-color: #F0E7D8;
 }
 
 code {
@@ -92,7 +92,7 @@ code {
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: #6b7280; /* gray */
+  background: #F4EDE2; /* updated to contrast with red background */
   opacity: 0.6;
   animation: typingBounce 1s infinite ease-in-out;
 }
@@ -130,4 +130,10 @@ code {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Custom placeholder styling for chat input */
+.chat-input-custom::placeholder {
+  color: #F4EDE2;
+  opacity: 0.8;
 }

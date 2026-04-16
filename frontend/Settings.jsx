@@ -52,41 +52,155 @@ export default function Settings() {
   if (!session) return <div className="container py-4">Please login first.</div>;
 
   return (
-    <div className="container py-4" style={{ maxWidth: 720 }}>
-      <h3 className="mb-3">Settings</h3>
+    <div className="container py-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-6 col-lg-5">
+          <div className="p-4">
+            <h2 className="mb-4 text-center fw-bold" style={{ color: "#800022", fontSize: "2.5rem" }}>
+              Settings
+            </h2>
 
-      {msg && <div className="alert alert-success">{msg}</div>}
-      {err && <div className="alert alert-danger">{err}</div>}
+            {msg && <div className="alert alert-success">{msg}</div>}
+            {err && <div className="alert alert-danger">{err}</div>}
 
-      <div className="card mb-3">
-        <div className="card-body">
-          <h5 className="mb-3">Profile</h5>
+            <div className="mb-5">
+              <h4 className="mb-3 fw-bold" style={{ color: "#800022" }}>Profile</h4>
 
-          <label className="form-label">Full Name</label>
-          <input className="form-control mb-3" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+              <div className="d-flex flex-column gap-3">
+                <div>
+                  <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                    Full Name:
+                  </label>
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#371C23",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      height: "45px",
+                      padding: "0 15px",
+                      fontSize: "1rem"
+                    }}
+                  />
+                </div>
 
-          <label className="form-label">Theme Preference</label>
-          <select className="form-select mb-3" value={prefTheme} onChange={(e) => setPrefTheme(e.target.value)}>
-            <option value="default">Default</option>
-            <option value="high_contrast">High Contrast</option>
-            <option value="compact">Compact</option>
-          </select>
+                <div>
+                  <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                    Theme Preference:
+                  </label>
+                  <select
+                    value={prefTheme}
+                    onChange={(e) => setPrefTheme(e.target.value)}
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#371C23",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      height: "45px",
+                      padding: "0 15px",
+                      fontSize: "1rem"
+                    }}
+                  >
+                    <option value="default">Default</option>
+                    <option value="high_contrast">High Contrast</option>
+                    <option value="compact">Compact</option>
+                  </select>
+                </div>
 
-          <button className="kpu-btn" onClick={saveProfile}>Save</button>
-        </div>
-      </div>
+                <div className="text-center mt-3">
+                  <button
+                    onClick={saveProfile}
+                    style={{
+                      backgroundColor: "#800022",
+                      color: "white",
+                      borderRadius: "30px",
+                      border: "none",
+                      padding: "10px 40px",
+                      fontSize: "1.1rem",
+                      fontWeight: "500",
+                      width: "250px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
 
-      <div className="card">
-        <div className="card-body">
-          <h5 className="mb-3">Change Password</h5>
+            <div>
+              <h4 className="mb-3 fw-bold" style={{ color: "#800022" }}>Change Password</h4>
 
-          <label className="form-label">Current Password</label>
-          <input className="form-control mb-3" type="password" value={currentPw} onChange={(e) => setCurrentPw(e.target.value)} />
+              <div className="d-flex flex-column gap-3">
+                <div>
+                  <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                    Current Password:
+                  </label>
+                  <input
+                    type="password"
+                    value={currentPw}
+                    onChange={(e) => setCurrentPw(e.target.value)}
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#371C23",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      height: "45px",
+                      padding: "0 15px",
+                      fontSize: "1rem"
+                    }}
+                  />
+                </div>
 
-          <label className="form-label">New Password</label>
-          <input className="form-control mb-3" type="password" value={newPw} onChange={(e) => setNewPw(e.target.value)} />
+                <div>
+                  <label style={{ color: "#800022", fontSize: "1.2rem", fontWeight: "500", marginBottom: "5px" }}>
+                    New Password:
+                  </label>
+                  <input
+                    type="password"
+                    value={newPw}
+                    onChange={(e) => setNewPw(e.target.value)}
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#371C23",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      height: "45px",
+                      padding: "0 15px",
+                      fontSize: "1rem"
+                    }}
+                  />
+                </div>
 
-          <button className="kpu-btn" onClick={changePassword}>Update Password</button>
+                <div className="text-center mt-3">
+                  <button
+                    onClick={changePassword}
+                    style={{
+                      backgroundColor: "#800022",
+                      color: "white",
+                      borderRadius: "30px",
+                      border: "none",
+                      padding: "10px 40px",
+                      fontSize: "1.1rem",
+                      fontWeight: "500",
+                      width: "250px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Update Password
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
