@@ -1,0 +1,66 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=kpu_chatbot
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./templates/db:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    # Only map db to a different host port if you want external db access. Internal containers use 3306.
+    ports:
+      - "3307:3306"
+
+  web:
+    image: final-project-student-chatbot-web:latest
+    # If the image was deleted, you could uncomment the build line assuming there is a Dockerfile for it
+    # build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=
+      - DB_NAME=kpu_chatbot
+      - DB_PORT=3306
+    depends_on:
+      - db
+
+  action_server:
+    image: rasa/rasa-sdk:3.6.2
+    volumes:
+      - ./actions:/app/actions
+    command: ["start", "--actions", "actions"]
+    ports:
+      - "5055:5055"
+
+  rasa:
+    image: rasa/rasa:3.6.20-full
+    volumes:
+      - .:/app
+    command: >
+      run -m models --enable-api --cors "*"
+    ports:
+      - "5005:5005"
+    depends_on:
+      - action_server
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app/cra-app/src
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - BROWSER=none
+    depends_on:
+      - web
+
+volumes:
+  db_data:

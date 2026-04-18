@@ -95,8 +95,8 @@ export default function Chat() {
 
   return (
     <div style={{ background: "#F0E7D8" }}>
-      <div className="container p-0" style={{ maxWidth: 1000 }}>
-        <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
+      <div className="container-fluid p-0">
+        <div style={{ display: "flex", flexDirection: "column", position: "relative", width: "100%" }}>
           
           {/* Scrollable Chat Body */}
           <div
@@ -105,17 +105,20 @@ export default function Chat() {
               height: 775,
               overflowY: "auto",
               background: "transparent",
-              marginBottom: "10px"
+              marginBottom: "10px",
+              width: "100%"
             }}
           >
+            <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 15px" }}>
             {messages.map((msg, i) => {
               const isUser = msg.from === "user";
               return (
                 <div
                   key={i}
-                  className={`d-flex mb-3 fade-in ${
+                  className={`d-flex fade-in ${
                     isUser ? "justify-content-end" : "justify-content-start"
                   }`}
+                  style={{ marginBottom: "10px" }}
                 >
                   <div
                     className="px-3 py-2"
@@ -125,7 +128,7 @@ export default function Chat() {
                         ? "16px 0 16px 16px"
                         : "0 16px 16px 16px",
                       background: isUser ? "#371C23" : "#800022",
-                      color: "white",
+                      color: "#F4EDE2",
                       border: "none",
                       boxShadow: "none",
                       whiteSpace: "pre-wrap",
@@ -140,14 +143,17 @@ export default function Chat() {
             })}
 
             {busy && (
-              <div className="d-flex justify-content-start mb-3 fade-in">
+              <div 
+                className="d-flex justify-content-start fade-in" 
+                style={{ marginBottom: "10px" }}
+              >
                 <div
                   className="px-3 py-2"
                   style={{
                     maxWidth: "75%",
                     borderRadius: "0 16px 16px 16px",
                     background: "#800022",
-                    color: "white",
+                    color: "#F4EDE2",
                     border: "none",
                     boxShadow: "none",
                     fontSize: 15
@@ -160,75 +166,76 @@ export default function Chat() {
 
             {/* anchor */}
             <div ref={bottomRef} />
+            </div>
           </div>
 
-          {/* Floating Back To Top */}
-          {showTopBtn && (
-            <button
-              onClick={scrollToTop}
-              style={{
-                position: "absolute",
-                right: 18,
-                bottom: 78,
-                width: 30,
-                height: 30,
-                borderRadius: "50%",
-                padding: 0,
-                display: "grid",
-                placeItems: "center",
-                marginBottom: 22,
-                fontSize: 12,
-                boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
-                zIndex: 10,
-                background: "#F4EDE2",
-                border: "none",
-                color: "#800022"
-              }}
-              title="Back to top"
-            >
-              ↑
-            </button>
-          )}
-
-          {/* Floating Scroll To Bottom */}
-          {showBottomBtn && (
-            <button
-              onClick={scrollToBottom}
-              style={{
-                position: "absolute",
-                right: 70,
-                bottom: 78,
-                width: 30,
-                height: 30,
-                borderRadius: "50%",
-                padding: 0,
-                display: "grid",
-                placeItems: "center",
-                marginBottom: 22,
-                fontSize: 18,
-                boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
-                zIndex: 10,
-                background: "#F4EDE2",
-                border: "none",
-                color: "#800022"
-              }}
-              title="Jump to latest"
-            >
-              ↓
-            </button>
-          )}
-
           {/* Input Area */}
-          <div
-            style={{
-              background: "#800022",
-              borderRadius: "30px",
-              display: "flex",
-              alignItems: "center",
-              padding: "10px 24px",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
-            }}
-          >
+          <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", padding: "0 15px", marginBottom: "20px", position: "relative" }}>
+            
+            {/* Floating Back To Top */}
+            {showTopBtn && (
+              <button
+                onClick={scrollToTop}
+                style={{
+                  position: "absolute",
+                  right: -50,
+                  bottom: 12,
+                  width: 38,
+                  height: 38,
+                  borderRadius: "50%",
+                  padding: 0,
+                  display: "grid",
+                  placeItems: "center",
+                  fontSize: 20,
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+                  zIndex: 10,
+                  background: "#F4EDE2",
+                  border: "1px solid #800022",
+                  color: "#800022"
+                }}
+                title="Back to top"
+              >
+                ↑
+              </button>
+            )}
+
+            {/* Floating Scroll To Bottom */}
+            {showBottomBtn && (
+              <button
+                onClick={scrollToBottom}
+                style={{
+                  position: "absolute",
+                  right: -50,
+                  bottom: 12,
+                  width: 38,
+                  height: 38,
+                  borderRadius: "50%",
+                  padding: 0,
+                  display: "grid",
+                  placeItems: "center",
+                  fontSize: 20,
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+                  zIndex: 10,
+                  background: "#F4EDE2",
+                  border: "1px solid #800022",
+                  color: "#800022"
+                }}
+                title="Jump to latest"
+              >
+                ↓
+              </button>
+            )}
+
+            <div
+              style={{
+                background: "#800022",
+                borderRadius: "30px",
+                display: "flex",
+                alignItems: "center",
+                padding: "10px 24px",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+              }}
+            >
             <input
               className="chat-input-custom"
               value={input}
@@ -239,7 +246,7 @@ export default function Chat() {
                 flex: 1,
                 background: "transparent",
                 border: "none",
-                color: "white",
+                color: "#F4EDE2",
                 outline: "none",
                 fontSize: "16px"
               }}
@@ -250,7 +257,7 @@ export default function Chat() {
               style={{
                 background: "transparent",
                 border: "none",
-                color: "white",
+                color: "#F4EDE2",
                 fontWeight: "bold",
                 fontSize: "16px",
                 marginLeft: "8px"
@@ -258,6 +265,7 @@ export default function Chat() {
             >
               SEND
             </button>
+          </div>
           </div>
         </div>
       </div>

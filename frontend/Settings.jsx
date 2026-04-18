@@ -78,7 +78,7 @@ export default function Settings() {
                     style={{
                       width: "100%",
                       backgroundColor: "#371C23",
-                      color: "white",
+                      color: "#F4EDE2",
                       border: "none",
                       borderRadius: "8px",
                       height: "45px",
@@ -98,7 +98,7 @@ export default function Settings() {
                     style={{
                       width: "100%",
                       backgroundColor: "#371C23",
-                      color: "white",
+                      color: "#F4EDE2",
                       border: "none",
                       borderRadius: "8px",
                       height: "45px",
@@ -117,7 +117,7 @@ export default function Settings() {
                     onClick={saveProfile}
                     style={{
                       backgroundColor: "#800022",
-                      color: "white",
+                      color: "#F4EDE2",
                       borderRadius: "30px",
                       border: "none",
                       padding: "10px 40px",
@@ -148,7 +148,7 @@ export default function Settings() {
                     style={{
                       width: "100%",
                       backgroundColor: "#371C23",
-                      color: "white",
+                      color: "#F4EDE2",
                       border: "none",
                       borderRadius: "8px",
                       height: "45px",
@@ -169,7 +169,7 @@ export default function Settings() {
                     style={{
                       width: "100%",
                       backgroundColor: "#371C23",
-                      color: "white",
+                      color: "#F4EDE2",
                       border: "none",
                       borderRadius: "8px",
                       height: "45px",
@@ -184,7 +184,7 @@ export default function Settings() {
                     onClick={changePassword}
                     style={{
                       backgroundColor: "#800022",
-                      color: "white",
+                      color: "#F4EDE2",
                       borderRadius: "30px",
                       border: "none",
                       padding: "10px 40px",

@@ -1,0 +1,26 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install bash and xdg-utils for react-scripts to work without opening browser
+RUN apk add --no-cache bash xdg-utils
+
+# Create CRA
+RUN npx create-react-app@5 cra-app
+WORKDIR /app/cra-app
+
+# Install additional packages used in the frontend codebase
+RUN npm install react-router-dom bootstrap axios
+
+# Remove default src
+RUN rm -rf src
+
+# Set polling to ensure hot reload works within Docker across different OSes
+ENV CHOKIDAR_USEPOLLING=true
+ENV WATCHPACK_POLLING=true
+
+# Keep the frontend running and do not open a browser by default
+ENV BROWSER=none
+
+# We run npm start. The src directory will be mounted dynamically.
+CMD ["npm", "start"]

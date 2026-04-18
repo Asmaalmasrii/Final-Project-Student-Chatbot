@@ -37,14 +37,14 @@ export default function SideDrawer({ open, onClose, session }) {
           display: "flex",
           flexDirection: "column",
           gap: 12,
-          color: "white"
+          color: "#F4EDE2"
         }}
       >
         <div className="d-flex align-items-center justify-content-between">
           <div style={{ fontWeight: 800, fontSize: "1.2rem" }}>Menu</div>
           <button 
             className="btn" 
-            style={{ color: "white", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "30px", padding: "4px 12px" }} 
+            style={{ color: "#F4EDE2", border: "1px solid rgba(255,255,255,0.5)", borderRadius: "30px", padding: "4px 12px" }} 
             onClick={onClose}
           >
             Close
@@ -60,7 +60,7 @@ export default function SideDrawer({ open, onClose, session }) {
         <Link 
           to="/chat" 
           onClick={onClose}
-          style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+          style={{ textDecoration: "none", color: "#F4EDE2", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
         >
           Chat
         </Link>
@@ -70,7 +70,7 @@ export default function SideDrawer({ open, onClose, session }) {
           <Link 
             to="/admin-login" 
             onClick={onClose}
-            style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+            style={{ textDecoration: "none", color: "#F4EDE2", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
           >
             Administrative Login
           </Link>
@@ -82,14 +82,14 @@ export default function SideDrawer({ open, onClose, session }) {
             <Link 
               to="/settings" 
               onClick={onClose}
-              style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+              style={{ textDecoration: "none", color: "#F4EDE2", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
             >
               Settings
             </Link>
             <Link 
               to="/history" 
               onClick={onClose}
-              style={{ textDecoration: "none", color: "white", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+              style={{ textDecoration: "none", color: "#F4EDE2", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
             >
               Previous Messages
             </Link>
