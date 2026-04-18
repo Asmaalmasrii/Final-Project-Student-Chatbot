@@ -12,7 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -23,7 +23,7 @@
         style="display: flex; flex-direction: column; height: calc(100% - 14px); margin-top: 14px;">
         <!-- Title Header -->
         <div class="topbar" style="justify-content: center; gap: 10px; padding: 10px 14px 0 14px; border-bottom: none;">
-          <img src="kcLogo.png" alt="logo" />
+			<img src="{{ url_for('static', filename='kcLogo.png') }}" alt="logo" />
           <div class="title">
             <h1>KPU CHAT</h1>
           </div>
@@ -112,7 +112,7 @@
         <div class="composer">
           <input id="message" placeholder="Ask Anything" autocomplete="off" />
           <!-- <button id="send" class="btn btn-primary">Send</button> -->
-          <button id="send" class="btn btn-primary"><img src="send.png" alt="send" /></button>
+          <button id="send" class="btn btn-primary"><img src="{{ url_for('static', filename='send.png') }}" alt="send" />
         </div>
       </div>
 
@@ -120,7 +120,7 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+	<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>

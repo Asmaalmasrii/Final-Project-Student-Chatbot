@@ -30,15 +30,59 @@ with open(META_PATH, "rb") as f:
 print(f"Loaded {len(meta)} chunks.")
 
 
-# ========= embedding  =========
+# ========= embedding =========
 def embed_query(text: str) -> np.ndarray:
     resp = client.embeddings.create(
-        model="text-embedding-3-small",  
+        model="text-embedding-3-small",
         input=text
     )
     vec = np.array([resp.data[0].embedding], dtype="float32")
-    faiss.normalize_L2(vec)  
+    faiss.normalize_L2(vec)
     return vec
+
+
+# ========= ranking helpers =========
+def get_source_priority(item: Dict[str, Any]) -> float:
+    """
+    Higher bonus = higher priority.
+    KPU sources are preferred over BC sources.
+    """
+    src = str(item.get("source", "")).lower()
+    url = str(item.get("url", "")).lower()
+
+    # first use explicit source if available
+    if src == "kpu_web":
+        return 0.10
+    if src == "kpu_pdf":
+        return 0.08
+    if src == "bc_gov_education":
+        return 0.01
+    if src == "bc_gov_education_pdf":
+        return 0.00
+
+    # fallback by url
+    if "kpu.ca" in url:
+        return 0.08
+    if "gov.bc.ca" in url:
+        return 0.00
+
+    return 0.00
+
+
+def rerank_results(distances, indices, meta, final_k=5):
+    scored = []
+
+    for score, idx in zip(distances[0], indices[0]):
+        if idx == -1:
+            continue
+
+        item = meta[idx]
+        bonus = get_source_priority(item)
+        final_score = float(score) + bonus
+        scored.append((final_score, item))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return [item for _, item in scored[:final_k]]
 
 
 # ========= RAG Action =========
@@ -61,30 +105,32 @@ class ActionKpuRagAnswer(Action):
         q_vec = embed_query(query)
 
         # ---- FAISS search ----
-        top_k = 5
-        distances, indices = index.search(q_vec, top_k)
+        # Search more candidates first, then rerank with KPU priority
+        search_k = 20
+        final_k = 5
+        distances, indices = index.search(q_vec, search_k)
+
+        best_items = rerank_results(distances, indices, meta, final_k=final_k)
 
         contexts = []
         sources = []
 
-        for idx in indices[0]:
-            if idx == -1:
-                continue
-
-            item = meta[idx]
-
+        for item in best_items:
             text = item.get("text", "")
             url = item.get("url", "")
 
-            contexts.append(text[:2000]) 
+            if text:
+                contexts.append(text[:2000])
             if url:
                 sources.append(url)
 
         context_text = "\n\n---\n\n".join(contexts)[:8000]
 
-  
         prompt = f"""
 You are a helpful assistant for Kwantlen Polytechnic University (KPU).
+
+Prefer KPU sources first whenever possible.
+Use BC education sources only as supporting information when KPU sources are not enough.
 
 Answer ONLY using the context below.
 If the answer is not found in the context, say you don't know and suggest checking the official KPU website.

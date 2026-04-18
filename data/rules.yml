@@ -15,3 +15,8 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: fallback to rag
+  steps:
+  - intent: nlu_fallback
+  - action: action_kpu_rag
