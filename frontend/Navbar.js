@@ -28,7 +28,7 @@ export default function Navbar() {
               className="btn d-flex align-items-center justify-content-center"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
-              style={{ backgroundColor: "#800022", color: "#F4EDE2", border: "none", borderRadius: "8px", width: "70px", height: "36px", fontSize: "20px", padding: 0, fontWeight: "600" }}
+              style={{ backgroundColor: "#800022", color: "#F4EDE2", border: "none", borderRadius: "8px", width: "80px", height: "36px", fontSize: "20px", padding: 0, fontWeight: "600" }}
             >
               MENU
             </button>

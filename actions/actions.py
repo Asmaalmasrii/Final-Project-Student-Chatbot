@@ -1,93 +1,49 @@
 import os
 import pickle
-import faiss
-import numpy as np
-
+import re
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from dotenv import load_dotenv
-load_dotenv()
-
-from openai import OpenAI
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STORE_DIR = os.path.join(BASE_DIR, "..", "rag_store")
-
-FAISS_PATH = os.path.join(STORE_DIR, "index.faiss")
 META_PATH  = os.path.join(STORE_DIR, "meta.pkl")
 
-print("OPENAI_API_KEY:", "SET" if os.environ.get("OPENAI_API_KEY") else "MISSING")
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-print("Loading FAISS index...")
-index = faiss.read_index(FAISS_PATH)
-
-print("Loading meta.pkl...")
+print("Loading meta.pkl locally...")
 with open(META_PATH, "rb") as f:
     meta = pickle.load(f)
 
-print(f"Loaded {len(meta)} chunks.")
+print(f"Loaded {len(meta)} chunks for local text retrieval.")
 
-
-# ========= embedding =========
-def embed_query(text: str) -> np.ndarray:
-    resp = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=text
-    )
-    vec = np.array([resp.data[0].embedding], dtype="float32")
-    faiss.normalize_L2(vec)
-    return vec
-
-
-# ========= ranking helpers =========
-def get_source_priority(item: Dict[str, Any]) -> float:
+def local_keyword_search(query: str, meta_list: list, top_k=2):
     """
-    Higher bonus = higher priority.
-    KPU sources are preferred over BC sources.
+    Performs a localized keyword match over the PKL metadata without relying 
+    on OpenAI Embeddings or FAISS indexing structures.
     """
-    src = str(item.get("source", "")).lower()
-    url = str(item.get("url", "")).lower()
-
-    # first use explicit source if available
-    if src == "kpu_web":
-        return 0.10
-    if src == "kpu_pdf":
-        return 0.08
-    if src == "bc_gov_education":
-        return 0.01
-    if src == "bc_gov_education_pdf":
-        return 0.00
-
-    # fallback by url
-    if "kpu.ca" in url:
-        return 0.08
-    if "gov.bc.ca" in url:
-        return 0.00
-
-    return 0.00
-
-
-def rerank_results(distances, indices, meta, final_k=5):
+    words = set(re.findall(r'\w+', query.lower()))
+    if not words: return []
+    
     scored = []
+    # Drop overly common grammar words to slightly improve primitive search
+    stop_words = {"what", "is", "the", "a", "an", "how", "do", "i", "can", "you", "tell", "me", "about", "for", "of", "to", "in", "and"}
+    meaningful_words = words - stop_words
+    
+    # If filter removed everything (e.g. "what is it"), fallback to full query
+    search_words = meaningful_words if meaningful_words else words
 
-    for score, idx in zip(distances[0], indices[0]):
-        if idx == -1:
-            continue
-
-        item = meta[idx]
-        bonus = get_source_priority(item)
-        final_score = float(score) + bonus
-        scored.append((final_score, item))
-
+    for item in meta_list:
+        text = str(item.get("text", "")).lower()
+        score = sum(1 for w in search_words if w in text)
+        if score > 0:
+            # Boost score slightly if exact phrase is found
+            if query.lower() in text:
+                score += 5
+            scored.append((score, item))
+            
     scored.sort(key=lambda x: x[0], reverse=True)
-    return [item for _, item in scored[:final_k]]
+    return [item for score, item in scored[:top_k]]
 
-
-# ========= RAG Action =========
 class ActionKpuRagAnswer(Action):
-
     def name(self) -> Text:
         return "action_kpu_rag"
 
@@ -101,62 +57,25 @@ class ActionKpuRagAnswer(Action):
             dispatcher.utter_message(text="Please type your question.")
             return []
 
-        # ---- embedding query ----
-        q_vec = embed_query(query)
+        # ---- Local text search bypassing API ---- 
+        best_items = local_keyword_search(query, meta, top_k=2)
 
-        # ---- FAISS search ----
-        # Search more candidates first, then rerank with KPU priority
-        search_k = 20
-        final_k = 5
-        distances, indices = index.search(q_vec, search_k)
+        if not best_items:
+             dispatcher.utter_message(text="I couldn't find a matching answer in my local database. I'm currently running fully offline without external API access. Please check the official KPU website!")
+             return []
 
-        best_items = rerank_results(distances, indices, meta, final_k=final_k)
-
-        contexts = []
+        answer = "Here is the most relevant information I found locally:\n\n"
         sources = []
-
+        
         for item in best_items:
-            text = item.get("text", "")
+            text = str(item.get("text", ""))[:800] # Clamp context length
+            answer += f"• {text}...\n\n"
             url = item.get("url", "")
-
-            if text:
-                contexts.append(text[:2000])
-            if url:
+            if url and url not in sources:
                 sources.append(url)
+                
+        if sources:
+            answer += "Sources:\n" + "\n".join(sources)
 
-        context_text = "\n\n---\n\n".join(contexts)[:8000]
-
-        prompt = f"""
-You are a helpful assistant for Kwantlen Polytechnic University (KPU).
-
-Prefer KPU sources first whenever possible.
-Use BC education sources only as supporting information when KPU sources are not enough.
-
-Answer ONLY using the context below.
-If the answer is not found in the context, say you don't know and suggest checking the official KPU website.
-
-Question:
-{query}
-
-Context:
-{context_text}
-"""
-
-        response = client.chat.completions.create(
-            model="gpt-4.1-mini",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
-        )
-
-        answer = response.choices[0].message.content.strip()
-
-        unique_sources = []
-        for s in sources:
-            if s not in unique_sources:
-                unique_sources.append(s)
-
-        if unique_sources:
-            answer += "\n\nSources:\n" + "\n".join(unique_sources[:5])
-
-        dispatcher.utter_message(text=answer)
+        dispatcher.utter_message(text=answer.strip())
         return []

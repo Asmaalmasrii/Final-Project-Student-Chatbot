@@ -25,6 +25,7 @@ services:
       - DB_PASSWORD=
       - DB_NAME=kpu_chatbot
       - DB_PORT=3306
+      - RASA_URL=http://rasa:5005/webhooks/rest/webhook
     depends_on:
       - db
 
@@ -32,6 +33,7 @@ services:
     image: rasa/rasa-sdk:3.6.2
     volumes:
       - ./actions:/app/actions
+      - ./rag_store:/app/rag_store
     command: ["start", "--actions", "actions"]
     ports:
       - "5055:5055"

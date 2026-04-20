@@ -96,6 +96,17 @@ export default function SideDrawer({ open, onClose, session }) {
           </>
         )}
 
+        {/* If logged in as admin show Admin FAQ Panel */}
+        {session?.user?.role === "admin" && (
+          <Link 
+            to="/admin/faqs" 
+            onClick={onClose}
+            style={{ textDecoration: "none", color: "#F4EDE2", padding: "8px 0", fontWeight: "500", fontSize: "1.1rem" }}
+          >
+            Admin FAQ Panel
+          </Link>
+        )}
+
         <div style={{ marginTop: "auto", color: "rgba(255,255,255,0.5)" }} className="small">
           KPU Student Assistant
         </div>

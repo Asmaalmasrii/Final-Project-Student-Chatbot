@@ -16,7 +16,7 @@ app.secret_key = os.getenv("FLASK_SECRET", "change-this-to-a-random-secret")
 # Allow cross-origin requests flexibly
 CORS(app, supports_credentials=True)
 
-RASA_URL = "http://127.0.0.1:5005/webhooks/rest/webhook"
+RASA_URL = os.environ.get("RASA_URL", "http://127.0.0.1:5005/webhooks/rest/webhook")
 
 
 # -----------------------
@@ -156,7 +156,7 @@ def login():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT id, email, role, password_hash FROM users WHERE email=%s AND is_active=1", (email,))
+    cursor.execute("SELECT id, email, role, password_hash, full_name FROM users WHERE email=%s AND is_active=1", (email,))
     user = cursor.fetchone()
 
     cursor.close()
@@ -172,7 +172,15 @@ def login():
     session["user_id"] = user["id"]
     session["role"] = user["role"]
 
-    return jsonify({"message": "Login successful", "user_id": user["id"], "role": user["role"]})
+    return jsonify({
+        "message": "Login successful", 
+        "user": {
+            "id": user["id"],
+            "email": user["email"],
+            "role": user["role"],
+            "full_name": user.get("full_name", "")
+        }
+    })
 
 
 @app.route("/logout", methods=["POST"])
@@ -195,6 +203,62 @@ def me():
         return jsonify({"logged_in": False})
     return jsonify({"logged_in": True, "user_id": session["user_id"], "role": session.get("role")})
 
+
+@app.route("/settings/profile", methods=["PUT"])
+def update_profile():
+    user_id = get_logged_in_user_id()
+    if not user_id or user_id == "guest":
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(force=True) or {}
+    full_name = (data.get("full_name") or "").strip()
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE users SET full_name=%s WHERE id=%s", (full_name, user_id))
+        conn.commit()
+        return jsonify({"message": "Profile updated successfully"})
+    except mysql.connector.Error as err:
+        return jsonify({"error": "Failed to update profile", "details": str(err)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+
+@app.route("/settings/password", methods=["PUT"])
+def update_password():
+    user_id = get_logged_in_user_id()
+    if not user_id or user_id == "guest":
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(force=True) or {}
+    current_pw = data.get("current_password") or ""
+    new_pw = data.get("new_password") or ""
+
+    if not current_pw or not new_pw:
+        return jsonify({"error": "Current and new passwords are required"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    try:
+        cursor.execute("SELECT password_hash FROM users WHERE id=%s", (user_id,))
+        user = cursor.fetchone()
+        
+        if not user or not bcrypt.checkpw(current_pw.encode("utf-8"), user["password_hash"].encode("utf-8")):
+            return jsonify({"error": "Incorrect current password"}), 401
+
+        new_hash = bcrypt.hashpw(new_pw.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+        cursor.execute("UPDATE users SET password_hash=%s WHERE id=%s", (new_hash, user_id))
+        conn.commit()
+        
+        return jsonify({"message": "Password updated successfully"})
+    except mysql.connector.Error as err:
+        return jsonify({"error": "Database error", "details": str(err)}), 500
+    finally:
+        cursor.close()
+        conn.close()
 
 # -----------------------
 # Chat API (logs conversation)
@@ -248,16 +312,99 @@ def chat():
     except mysql.connector.Error as err:
         return jsonify({"error": "Database error", "details": str(err)}), 500
 
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.ConnectionError as e:
+        with open("flask_debug.log", "a") as f: f.write(f"ConnectionError: {str(e)}\n")
         return jsonify({"error": "Rasa is not reachable. Is it running on port 5005?"}), 502
-    except requests.exceptions.Timeout:
+    except requests.exceptions.Timeout as e:
+        with open("flask_debug.log", "a") as f: f.write(f"Timeout: {str(e)}\n")
         return jsonify({"error": "Rasa request timed out."}), 504
-    except requests.exceptions.HTTPError:
-        return jsonify({"error": "Rasa returned an error.", "details": r.text}), 502
+    except requests.exceptions.HTTPError as e:
+        with open("flask_debug.log", "a") as f: f.write(f"HTTPError: {str(e)}\n")
+        return jsonify({"error": "Rasa returned an error.", "details": str(e)}), 502
+    except Exception as e:
+        import traceback
+        with open("flask_debug.log", "a") as f: f.write(f"Exception: {traceback.format_exc()}\n")
+        return jsonify({"error": "Unexpected server error", "details": str(e)}), 500
     finally:
         if db_conn:
             db_conn.close()
 
+
+@app.route("/admin/faqs", methods=["GET", "POST"])
+def admin_faqs():
+    user_id = get_logged_in_user_id()
+    if not user_id or session.get("role") != "admin":
+        return jsonify({"error": "Admin access required"}), 403
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    
+    if request.method == "GET":
+        cursor.execute("SELECT * FROM faqs ORDER BY id DESC")
+        faqs = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return jsonify(faqs)
+        
+    if request.method == "POST":
+        data = request.get_json(force=True) or {}
+        try:
+            cursor.execute(
+                "INSERT INTO faqs (question, answer, category, tags, published) VALUES (%s, %s, %s, %s, %s)",
+                (data.get("question", ""), data.get("answer", ""), data.get("category", ""), data.get("tags", ""), int(data.get("published", True)))
+            )
+            conn.commit()
+            return jsonify({"success": True})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            conn.close()
+
+@app.route("/admin/faqs/<int:faq_id>", methods=["DELETE"])
+def delete_faq(faq_id):
+    user_id = get_logged_in_user_id()
+    if not user_id or session.get("role") != "admin":
+        return jsonify({"error": "Admin access required"}), 403
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM faqs WHERE id=%s", (faq_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"success": True})
+
+@app.route("/admin/reindex_faqs", methods=["POST"])
+def reindex_faqs():
+    user_id = get_logged_in_user_id()
+    if not user_id or session.get("role") != "admin":
+        return jsonify({"error": "Admin access required"}), 403
+    return jsonify({"success": True})
+
+@app.route("/history", methods=["GET"])
+def history():
+    user_id = get_logged_in_user_id()
+    if not user_id or user_id == "guest":
+        return jsonify({"error": "Must be logged in to view history"}), 401
+    
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute("""
+            SELECT m.id, m.sender, m.message_text, m.created_at
+            FROM messages m
+            JOIN conversation_sessions cs ON m.session_id = cs.id
+            WHERE cs.user_id = %s
+            ORDER BY m.created_at ASC
+        """, (user_id,))
+        messages = cursor.fetchall()
+        return jsonify(messages)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000, debug=True)

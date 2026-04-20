@@ -97,12 +97,12 @@ export default function Chat() {
     <div style={{ background: "#F0E7D8" }}>
       <div className="container-fluid p-0">
         <div style={{ display: "flex", flexDirection: "column", position: "relative", width: "100%" }}>
-          
+
           {/* Scrollable Chat Body */}
           <div
             ref={chatRef}
             style={{
-              height: 775,
+              height: 625, //625 | 775
               overflowY: "auto",
               background: "transparent",
               marginBottom: "10px",
@@ -110,68 +110,67 @@ export default function Chat() {
             }}
           >
             <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 15px" }}>
-            {messages.map((msg, i) => {
-              const isUser = msg.from === "user";
-              return (
+              {messages.map((msg, i) => {
+                const isUser = msg.from === "user";
+                return (
+                  <div
+                    key={i}
+                    className={`d-flex fade-in ${isUser ? "justify-content-end" : "justify-content-start"
+                      }`}
+                    style={{ marginBottom: "10px" }}
+                  >
+                    <div
+                      className="px-3 py-2"
+                      style={{
+                        maxWidth: "75%",
+                        borderRadius: isUser
+                          ? "16px 0 16px 16px"
+                          : "0 16px 16px 16px",
+                        background: isUser ? "#371C23" : "#800022",
+                        color: "#F4EDE2",
+                        border: "none",
+                        boxShadow: "none",
+                        whiteSpace: "pre-wrap",
+                        lineHeight: 1.45,
+                        fontSize: 16
+                      }}
+                    >
+                      <div>{msg.text}</div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {busy && (
                 <div
-                  key={i}
-                  className={`d-flex fade-in ${
-                    isUser ? "justify-content-end" : "justify-content-start"
-                  }`}
+                  className="d-flex justify-content-start fade-in"
                   style={{ marginBottom: "10px" }}
                 >
                   <div
                     className="px-3 py-2"
                     style={{
                       maxWidth: "75%",
-                      borderRadius: isUser
-                        ? "16px 0 16px 16px"
-                        : "0 16px 16px 16px",
-                      background: isUser ? "#371C23" : "#800022",
+                      borderRadius: "0 16px 16px 16px",
+                      background: "#800022",
                       color: "#F4EDE2",
                       border: "none",
                       boxShadow: "none",
-                      whiteSpace: "pre-wrap",
-                      lineHeight: 1.45,
-                      fontSize: 16
+                      fontSize: 15
                     }}
                   >
-                    <div>{msg.text}</div>
+                    <TypingDots />
                   </div>
                 </div>
-              );
-            })}
+              )}
 
-            {busy && (
-              <div 
-                className="d-flex justify-content-start fade-in" 
-                style={{ marginBottom: "10px" }}
-              >
-                <div
-                  className="px-3 py-2"
-                  style={{
-                    maxWidth: "75%",
-                    borderRadius: "0 16px 16px 16px",
-                    background: "#800022",
-                    color: "#F4EDE2",
-                    border: "none",
-                    boxShadow: "none",
-                    fontSize: 15
-                  }}
-                >
-                  <TypingDots />
-                </div>
-              </div>
-            )}
-
-            {/* anchor */}
-            <div ref={bottomRef} />
+              {/* anchor */}
+              <div ref={bottomRef} />
             </div>
           </div>
 
           {/* Input Area */}
           <div style={{ maxWidth: 1000, margin: "0 auto", width: "100%", padding: "0 15px", marginBottom: "20px", position: "relative" }}>
-            
+
             {/* Floating Back To Top */}
             {showTopBtn && (
               <button
@@ -236,36 +235,36 @@ export default function Chat() {
                 boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
               }}
             >
-            <input
-              className="chat-input-custom"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && send()}
-              placeholder="Ask Anything"
-              style={{
-                flex: 1,
-                background: "transparent",
-                border: "none",
-                color: "#F4EDE2",
-                outline: "none",
-                fontSize: "16px"
-              }}
-            />
-            <button
-              onClick={send}
-              disabled={busy}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#F4EDE2",
-                fontWeight: "bold",
-                fontSize: "16px",
-                marginLeft: "8px"
-              }}
-            >
-              SEND
-            </button>
-          </div>
+              <input
+                className="chat-input-custom"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && send()}
+                placeholder="Ask Anything"
+                style={{
+                  flex: 1,
+                  background: "transparent",
+                  border: "none",
+                  color: "#F4EDE2",
+                  outline: "none",
+                  fontSize: "16px"
+                }}
+              />
+              <button
+                onClick={send}
+                disabled={busy}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#F4EDE2",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  marginLeft: "8px"
+                }}
+              >
+                SEND
+              </button>
+            </div>
           </div>
         </div>
       </div>

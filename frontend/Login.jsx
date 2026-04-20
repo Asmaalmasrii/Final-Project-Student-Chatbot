@@ -109,7 +109,7 @@ export default function Login() {
                     padding: "10px 40px",
                     fontSize: "1.1rem",
                     fontWeight: "500",
-                    width: "180px",
+                    width: "200px",
                     cursor: "pointer"
                   }}
                 >
